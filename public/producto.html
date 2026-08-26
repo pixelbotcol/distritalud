@@ -1,6 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Producto — Distritalud</title>
+<title id="page-title">Producto — Distritalud</title>
+<meta id="meta-description" name="description" content="Descubre nuestros productos naturales en Distritalud. Ingredientes, indicaciones y modo de uso. Cotiza por WhatsApp con envíos a todo el país.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#2E8B57">
+<link rel="canonical" id="canonical-link" href="https://distritalud.pages.dev/producto.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E">
+
+<!-- Open Graph -->
+<meta id="og-type" property="og:type" content="product">
+<meta property="og:site_name" content="Distritalud">
+<meta id="og-title" property="og:title" content="Producto — Distritalud">
+<meta id="og-description" property="og:description" content="Producto natural disponible en Distritalud.">
+<meta id="og-image" property="og:image" content="https://distritalud.pages.dev/img/productos/clemen-florax-1.jpg">
+<meta id="og-url" property="og:url" content="https://distritalud.pages.dev/producto.html">
+<meta property="og:locale" content="es_CO">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta id="twitter-title" name="twitter:title" content="Producto — Distritalud">
+<meta id="twitter-description" name="twitter:description" content="Producto natural disponible en Distritalud.">
+<meta id="twitter-image" name="twitter:image" content="https://distritalud.pages.dev/img/productos/clemen-florax-1.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -266,6 +290,8 @@
   .wa-fab:hover{transform:scale(1.08);}
   .wa-fab svg{width:30px;height:30px;}
 </style>
+</head>
+<body>
 
 <header class="nav">
   <div class="nav-inner">
@@ -428,4 +454,61 @@
       </a>
     `).join('');
   }
+
+  // ===== SEO: title, meta description, Open Graph, JSON-LD =====
+  if (product) {
+    const pageTitle = `${product.name} — ${esc(product.brand)} | Distritalud`;
+    const pageDesc = `${product.tagline} Ingredientes: ${product.ingredients.slice(0,4).join(', ')}. ${product.presentation}. Cotiza por WhatsApp.`;
+    const pageUrl = `https://distritalud.pages.dev/producto.html?slug=${product.slug}`;
+    const pageImg = `https://distritalud.pages.dev/img/productos/${product.images[0]}`;
+
+    document.getElementById('page-title').textContent = pageTitle;
+    document.getElementById('meta-description').setAttribute('content', pageDesc);
+    document.getElementById('canonical-link').setAttribute('href', pageUrl);
+    document.getElementById('og-title').setAttribute('content', pageTitle);
+    document.getElementById('og-description').setAttribute('content', pageDesc);
+    document.getElementById('og-image').setAttribute('content', pageImg);
+    document.getElementById('og-url').setAttribute('content', pageUrl);
+    document.getElementById('twitter-title').setAttribute('content', pageTitle);
+    document.getElementById('twitter-description').setAttribute('content', pageDesc);
+    document.getElementById('twitter-image').setAttribute('content', pageImg);
+
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": product.name,
+      "brand": { "@type": "Brand", "name": product.brand },
+      "description": product.tagline + ' ' + product.indications.join(', ') + '.',
+      "image": pageImg,
+      "sku": product.slug,
+      "category": CATEGORIES[product.category].label,
+      "offers": {
+        "@type": "Offer",
+        "url": pageUrl,
+        "priceCurrency": "COP",
+        "availability": "https://schema.org/InStock",
+        "seller": { "@type": "Organization", "name": "Distritalud" }
+      }
+    });
+    document.head.appendChild(ld);
+
+    const breadcrumbLd = document.createElement('script');
+    breadcrumbLd.type = 'application/ld+json';
+    breadcrumbLd.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Inicio", "item": "https://distritalud.pages.dev/" },
+        { "@type": "ListItem", "position": 2, "name": "Productos", "item": "https://distritalud.pages.dev/index.html#productos" },
+        { "@type": "ListItem", "position": 3, "name": product.name, "item": pageUrl }
+      ]
+    });
+    document.head.appendChild(breadcrumbLd);
+  } else {
+    document.getElementById('meta-description').setAttribute('content', 'El producto que buscas no existe o fue movido. Explora el catálogo completo de productos naturales de Distritalud.');
+  }
 </script>
+</body>
+</html>
