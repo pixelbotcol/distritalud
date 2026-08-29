@@ -477,15 +477,19 @@
       });
     });
 
+    const listCard = (icon, title, items) => `
+      <div class="p-card">
+        <h2><span class="ic">${icon}</span> ${title}</h2>
+        <ul class="p-list">${items.map(i => `<li><span class="ic">•</span>${esc(i)}</li>`).join('')}</ul>
+      </div>`;
+
     detailsRoot.innerHTML = `
       <div class="p-card">
-        <h2><span class="ic">🌿</span> Ingredientes</h2>
+        <h2><span class="ic">🌿</span> ${product.features ? 'Componentes' : 'Ingredientes'}</h2>
         <div class="p-chiplist">${product.ingredients.map(i => `<span class="tag">${esc(i)}</span>`).join('')}</div>
       </div>
-      <div class="p-card">
-        <h2><span class="ic">✅</span> Indicado para</h2>
-        <ul class="p-list">${product.indications.map(i => `<li><span class="ic">•</span>${esc(i)}</li>`).join('')}</ul>
-      </div>
+      ${product.indications ? listCard('✅', 'Indicado para', product.indications) : ''}
+      ${product.features ? listCard('✨', 'Características', product.features) : ''}
       ${product.usage ? `<div class="p-usage"><span class="ic">📋</span><div><h3>Modo de uso</h3><p>${esc(product.usage)}</p></div></div>` : ''}
     `;
 
@@ -528,7 +532,7 @@
       "@type": "Product",
       "name": product.name,
       "brand": { "@type": "Brand", "name": product.brand },
-      "description": product.tagline + ' ' + product.indications.join(', ') + '.',
+      "description": product.tagline + ' ' + (product.indications || product.features || []).join(', ') + '.',
       "image": pageImg,
       "sku": product.slug,
       "category": CATEGORIES[product.category].label,
