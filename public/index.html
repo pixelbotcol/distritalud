@@ -439,10 +439,16 @@
     .section{padding:56px 0;}
     .section-head{margin:0 auto 32px;}
     .bento{gap:14px;}
-    .cat-card{aspect-ratio:16/10;}
+    .cat-card{aspect-ratio:4/3.2;}
+    .cat-card img{object-position:center 25%;}
     .prod-grid{gap:18px;}
-    .filter-row{gap:8px;margin-bottom:28px;}
-    .filter-chip{padding:8px 14px;font-size:.8rem;}
+    .filter-row{
+      flex-wrap:nowrap;justify-content:flex-start;gap:8px;margin:0 -20px 28px;
+      padding:0 20px 6px;overflow-x:auto;scroll-snap-type:x proximity;
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    }
+    .filter-row::-webkit-scrollbar{display:none;}
+    .filter-chip{padding:8px 14px;font-size:.8rem;white-space:nowrap;flex-shrink:0;scroll-snap-align:start;}
     .feature-row{gap:22px;margin-bottom:48px;}
     .feature-text h3{font-size:1.4rem;}
     .test-grid{gap:16px;}
